@@ -16,6 +16,8 @@ The following document contains visualizations relating HOLC grades and environm
 ## Initial Setup
 
 ```{r}
+#|output: false
+#|message: false
 # Loading in necessary libraries
 library(here)
 library(tidyverse)
@@ -27,9 +29,11 @@ library(testthat)
 ```
 
 ```{r}
+#| output: false
+#| message: false
 # Loading in data
-ineq <- st_read(here('data/mapping-inequality/mapping-inequality-los-angeles.json')) # using here package 
-birds <- st_read(here('data/gbif-birds-LA/gbif-birds-LA.shp'))                       # to locate files
+ineq <- st_read(here('data/mapping-inequality/mapping-inequality-los-angeles.json'), quiet = TRUE) # using here package 
+birds <- st_read(here('data/gbif-birds-LA/gbif-birds-LA.shp'), quiet = TRUE)                       # to locate files
 ```
 
 Exploring and Transforming CRS'
@@ -52,10 +56,10 @@ if (st_crs(ineq) == st_crs(birds)){
 -   an appropriate base map
 -   a clear title and legend
 
-
 ```{r}
+#| output: false
 # Loading in base map data
-ejscreen <- st_read(here("data", "ejscreen","EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"))
+ejscreen <- st_read(here("data", "ejscreen","EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"), quiet = TRUE)
 
 # Filtering data for only LA County
 la <- ejscreen %>%
@@ -85,7 +89,18 @@ if (st_crs(ineq) == st_crs(la)){
 ```{r}
 # Creating a custom color theme for map, as well as for following plots
 # With each grade corresponding to the color defined/typically used by HOLC
-grade_colors <- c("A" = "darkgreen", "B" = "darkblue", "C" = "yellow", "D" = "darkred", "NA" = "gray")
+grade_colors <- c("A" = "darkgreen", 
+                  "B" = "darkblue", 
+                  "C" = "yellow", 
+                  "D" = "darkred", 
+                  "No Grade" = "gray")
+
+# Also creating grade label variable with HOLC grade meaning
+grade_labels <-  c("A: Best", 
+                  "B: Still Desirable", 
+                  "C: Definitely Declining", 
+                  "D: Hazardous",
+                  "No Grade")
 ```
 
 ```{r}
@@ -96,7 +111,8 @@ tm_shape(ineq) +
   tm_polygons(
   fill = "grade",               # coloring by HOLC grade
   fill.legend = tm_legend(title = "HOLC Grade"),
-  fill.scale = tm_scale_ordinal(values = grade_colors)) +
+  fill.scale = tm_scale_ordinal(values = grade_colors,
+                                labels = grade_labels)) +
 tm_title(text = "Historical Redlining Neighborhoods, Los Angeles") +
 tm_compass() +                  # adding North arrow
 tm_scalebar()                   # adding scale bar
@@ -187,15 +203,18 @@ expect_true("No Grade" %in% low_inc_mean$grade)
 ```
 
 ```{r}
+#| warning: false
 # Creating a bar plot
 ggplot(data = low_inc_mean, aes(x = grade, y = low_inc)) +
   geom_col(aes(fill = grade)) +                              # coloring by HOLC Grade
-  scale_fill_manual(values = grade_colors, guide = "none") + # removing legend bc it is redundant
+  scale_fill_manual(values = grade_colors,
+                    labels = grade_labels) + # removing legend bc it is redundant
   theme_light() +
   labs(title = "Census Block Percent Low Income, by HOLC Grade",
        subtitle = "Los Angeles County",
        x = "HOLC Grade",
-       y = "Mean % Low Income")
+       y = "Mean % Low Income",
+       fill = "HOLC Classification")
 ```
 
 Visualization 2
@@ -234,12 +253,14 @@ facet_labels <- c(
 ggplot(data = percentiles_long, aes(x = grade, y = mean)) +
   geom_col(aes(fill = grade)) +
   facet_wrap(~vars, labeller = as_labeller(facet_labels)) +      # faceting and specifying plot headings
-  scale_fill_manual(values = grade_colors, guide = "none") +
+  scale_fill_manual(values = grade_colors,
+                    labels = grade_labels) +
   theme_light() + 
   labs(title = "Environmental Justice Indicator Percentiles, by HOLC Grade",
        subtitle = "Los Angeles County", 
        x = "HOLC Grade",
-       y = "Mean Percentile") 
+       y = "Mean Percentile",
+       fill = "HOLC Classification") 
 ```
 
 4.  **Write a brief paragraph reflecting on these results**
@@ -313,11 +334,13 @@ expect_true("No Grade" %in% bird_perc$grade)
 # Plotting a bar graph using our summary
 ggplot(data = bird_perc, aes(x = grade, y = percent)) +
   geom_col((aes(fill = grade))) +
-   scale_fill_manual(values = grade_colors, guide = "none") + # using the same custom colors as previous plots
+   scale_fill_manual(values = grade_colors,
+                     labels = grade_labels) + # using the same custom colors as previous plots
   theme_light() + 
   labs(title = "Bird Observations Across HOLC Grades",
        x = "HOLC Grade",
-       y = "Percent of Observations") 
+       y = "Percent of Observations",
+       fill = "HOLC Classification") 
 
 # The assignment asks for a legend, but I feel it is redundant in this plot.
 ```
