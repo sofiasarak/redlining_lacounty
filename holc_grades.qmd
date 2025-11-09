@@ -13,6 +13,12 @@ knitr:
 
 The following document contains visualizations relating HOLC grades and environmental indicators (potentially revealing environmental injustices) in Los Angeles County, California.
 
+**Github README**
+
+![](readme_top.png)
+
+![](readme_bottom.png)
+
 ## Initial Setup
 
 ```{r}
@@ -342,7 +348,6 @@ ggplot(data = bird_perc, aes(x = grade, y = percent)) +
        y = "Percent of Observations",
        fill = "HOLC Classification") 
 
-# The assignment asks for a legend, but I feel it is redundant in this plot.
 ```
 
 2.  Spoiler alert!! Our results don’t match the findings from Ellis-Soto et al. 2023! Read the abstract of the study. Why might we have obtained different results in our analysis? What did the paper consider that we did not?
