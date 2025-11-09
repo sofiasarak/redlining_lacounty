@@ -6,7 +6,17 @@ The assignment explores historically redlined districts in Los Angeles County, C
 
 The analysis in this repository includes a spatial visualization of HOLC grades across LA, visualizations comparing environmental justice indicators across the grades, and a visualization exploring bird biodiversity and percentages associated with observation contribution, also by grade. These results are then summarized and reflected on in responses.
 
-For more information on the homework assignment itself (including all of the data and sources), reference the [assignment description](https://eds-223-geospatial.github.io/assignments/HW2.html).
+For more information on the homework assignment itself, reference the [assignment description](https://eds-223-geospatial.github.io/assignments/HW2.html).
+
+## Data Source
+
+Our environmental justice data comes from the United States Environmental Protection Agency’s former EJScreen: Environmental Justice Screening and Mapping Tool. This tool is no longer operating, but an [unofficial version](https://pedp-ejscreen.azurewebsites.net/) is still running. EJScreen provided environmental and demographic information for the US at the Census tract and block group levels; in this analysis, block group level data was used and was downloaded from the [EPA site](https://www.epa.gov/ejscreen/download-ejscreen-data). 
+
+Digitized maps and information on the HOLC classification system were created by the [Digital Scholarship Lab](https://dsl.richmond.edu/) at the University of Richmond as part of the [Mapping Inequality project](https://dsl.richmond.edu/panorama/redlining/#loc=5/39.1/-94.58) (and was downloaded from their [website](https://dsl.richmond.edu/panorama/redlining/#loc=5/39.1/-94.58&text=downloads)).
+
+Biodiversity data was sourced from the [Global Biodiversity Information Facility](https://eds-223-geospatial.github.io/assignments/gbif.org), which is the largest aggregator of biodiversity observations in the world. The data set typically includes the species and the location and date that it was observed. This analysis uses data from 2021 onward.
+
+*Information on data sources was retrieved from original assignment description.*
 
 ## Repository Structure
 ```
